@@ -1,5 +1,5 @@
 // App component - represents the whole app
-App = React.createClass({
+GigPage = React.createClass({
 
     mixins: [ReactMeteorData],
 
@@ -51,7 +51,7 @@ App = React.createClass({
 
     render() {
         return (
-            <div className="container">
+            <div className="gigPageContainer">
                 <header>
                     <h1>Gig List ({this.data.incompleteCount})</h1>
 
