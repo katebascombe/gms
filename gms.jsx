@@ -25,7 +25,12 @@ if (Meteor.isClient) {
                 </Router>
             )
         }
-    })
+    });
+
+    // Accounts configs
+    Accounts.ui.config({
+        passwordSignupFields: "USERNAME_ONLY"
+    });
 
     Meteor.startup(function () {
         // Use Meteor.startup to render the component after the page is ready
