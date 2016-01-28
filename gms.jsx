@@ -32,8 +32,38 @@ if (Meteor.isClient) {
         passwordSignupFields: "USERNAME_ONLY"
     });
 
+    // Subscribe to collections in db
+    Meteor.subscribe("gigs");
+
     Meteor.startup(function () {
         // Use Meteor.startup to render the component after the page is ready
         React.render(<Routes />, document.getElementById("render-target"));
     });
 }
+
+if (Meteor.isServer) {
+    Meteor.publish("gigs", function() {
+        return Gigs.find();
+    })
+}
+
+Meteor.methods({
+    addGig(text) {
+        if(! Meteor.userId()) {
+            throw new Meteor.Error("not-authorized");
+        }
+
+        Gigs.insert({
+            text: text,
+            createdAt: new Date()
+        })
+    },
+
+    removeGig(gigId) {
+        Gigs.remove(gigId);
+    },
+
+    setChecked(gigId, setChecked) {
+        Gigs.update(gigId, { $set: { checked: setChecked } });
+    }
+})
