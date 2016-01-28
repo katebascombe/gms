@@ -40,10 +40,7 @@ GigPage = React.createClass({
         // Find the text field via the React ref
         var text = React.findDOMNode(this.refs.textInput).value.trim();
 
-        Gigs.insert({
-            text: text,
-            createdAt: new Date() // current time
-        });
+        Meteor.call("addGig", text);
 
         // Clear form
         React.findDOMNode(this.refs.textInput).value = "";

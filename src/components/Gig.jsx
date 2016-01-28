@@ -9,13 +9,11 @@ Gig = React.createClass({
 
     toggleChecked() {
         // Set the checked property to the opposite of its current value
-        Gigs.update(this.props.gig._id, {
-            $set: {checked: ! this.props.gig.checked}
-        });
+        Meteor.call("setChecked", this.props.gig._id, ! this.props.gig.checked);
     },
 
     deleteGig() {
-        Gigs.remove(this.props.gig._id);
+        Meteor.call("removeGig", this.props.gig._id);
     },
 
     render() {
