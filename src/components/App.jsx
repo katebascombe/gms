@@ -11,12 +11,18 @@ App = React.createClass({
 
     render() {
         return (
-            <div className="container">
-                <AccountsUIWrapper />
-
+            <div className="appContainer">
+            <AccountsUIWrapper />
                 { this.data.currentUser ?
-                    this.props.children
-                : "" }
+                    <div>
+                        <Header />
+                        <div className="container">
+                            { this.props.children }
+                        </div>
+                    </div>
+                : 
+                    <GigForm />
+                }
             </div>
         )
     }

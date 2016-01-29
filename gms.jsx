@@ -57,13 +57,5 @@ Meteor.methods({
             text: text,
             createdAt: new Date()
         })
-    },
-
-    removeGig(gigId) {
-        Gigs.remove(gigId);
-    },
-
-    setChecked(gigId, setChecked) {
-        Gigs.update(gigId, { $set: { checked: setChecked } });
     }
 })

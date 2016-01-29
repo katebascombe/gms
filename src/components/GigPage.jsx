@@ -10,15 +10,8 @@ GigPage = React.createClass({
     },
 
     getMeteorData() {
-        let query = {};
-
-        if(this.state.hideCompleted) {
-            query = {checked: {$ne: true}};
-        }
-
         return {
-            gigs: Gigs.find(query, {sort: {createdAt: -1}}).fetch(),
-            incompleteCount: Gigs.find({checked: {$ne: true}}).count()
+            gigs: Gigs.find({}, {sort: {createdAt: -1}}).fetch()
         };
     },
 
@@ -28,41 +21,15 @@ GigPage = React.createClass({
         });
     },
 
-    toggleHideCompleted() {
-        this.setState({
-            hideCompleted: ! this.state.hideCompleted
-        })
-    },
-
-    handleSubmit(event) {
-        event.preventDefault();
-
-        // Find the text field via the React ref
-        var text = React.findDOMNode(this.refs.textInput).value.trim();
-
-        Meteor.call("addGig", text);
-
-        // Clear form
-        React.findDOMNode(this.refs.textInput).value = "";
-    },
-
     render() {
         return (
             <div className="gigPageContainer">
                 <header>
-                    <h1>Gig List ({this.data.incompleteCount})</h1>
-
-                    <label className="hide-completed">
-                        <input type="checkbox" readOnly={true} checked={this.state.hideCompleted} onClick={this.toggleHideCompleted} />
-                        Hide completed gigs
-                    </label>
-                    
-                    <form className="new-gig" onSubmit={this.handleSubmit} >
-                        <input type="text" ref="textInput" placeholder="Type to add new gig" />
-                    </form>
+                    <h1>Gigs</h1>
                 </header>
 
-                <ul>
+                <ul className="collection with-header">
+                    <li className="collection-header"><h4>New</h4></li>
                     {this.renderGigs()}
                 </ul>
             </div>
