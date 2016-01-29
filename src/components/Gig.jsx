@@ -7,27 +7,16 @@ Gig = React.createClass({
         gig: React.PropTypes.object.isRequired
     },
 
-    toggleChecked() {
-        // Set the checked property to the opposite of its current value
-        Meteor.call("setChecked", this.props.gig._id, ! this.props.gig.checked);
-    },
-
-    deleteGig() {
-        Meteor.call("removeGig", this.props.gig._id);
-    },
-
     render() {
-        // Give gigs a different className when they are checked off,
-        // so that we can style them nicely in css
-        const gigClassName = this.props.gig.checked ? "checked" : "";
 
         return (
-            <li className={ gigClassName }>
-                <button className="delete" onClick={ this.deleteGig }>&times;</button>
-
-                <input type="checkbox" readOnly={ true } checked={ this.props.gig.checked } onClick={ this.toggleChecked } />
-
-                <span className="text">{ this.props.gig.text }</span>
+            <li className="collection-item">
+                <div>
+                    { this.props.gig.text }
+                    <a href="#!" className="secondary-content">
+                        <i className="material-icons">send</i>
+                    </a>
+                </div>
             </li>
         );
     }
