@@ -1,38 +1,32 @@
 // Gig Form component - Customers fill it out to create a new gig
 GigForm = React.createClass({
 
-    // slideForward(event) {
-    //     let currentPanelId = $(event.currentTarget).parents(".panel").attr("id");
-    //     let futurePanelId = parseInt(currentPanelId) + 1;
-    //     let $futurePanel = $("#"+futurePanelId);
-
-    //     // Remove active class from all panels
-    //     $(".panel").removeClass("panel__active");
-
-    //     // Add active class to next panel
-    //     $futurePanel.addClass("panel__active");
-    // },
-
-    // slideBack(event) {
-    //     let currentPanelId = $(event.currentTarget).parents(".panel").attr("id");
-    //     let prevPanelId = parseInt(currentPanelId) - 1;
-    //     let $prevPanel = $("#"+prevPanelId);
-
-    //     // Remove active class from all panels
-    //     $(".panel").removeClass("panel__active");
-
-    //     // Add active class to previous panel
-    //     $prevPanel.addClass("panel__active");
-    // },
-
     getInitialState() {
         return {
             activeSlide: 1
         };
     },
 
+    validateSlide() {
+        return $("#panel-" + this.state.activeSlide).find(".error").length === 0;
+    },
+
+    validateField(event) {
+        let $element = event.currentTarget;
+
+        if($element.value) {
+            $element.removeClass("error");
+        } else {
+            $element.addClass("error");
+        }
+    },
+
     increaseSlides(event) {
-        this.setState({ activeSlide: this.state.activeSlide + 1 });
+        if(this.checkSlideValidation()) {
+            this.setState({ activeSlide: this.state.activeSlide + 1 });
+        } else {
+            // Show error message
+        }
     },
 
     decreaseSlides(event) {
@@ -50,22 +44,27 @@ GigForm = React.createClass({
     handleSubmit(event) {
         event.preventDefault();
 
-        let gig = {
-            "username": React.findDOMNode(this.refs.username).value,
-            "gigRef": React.findDOMNode(this.refs.gigRef).value,
-            "domainName": React.findDOMNode(this.refs.domainName).value.trim(),
-            "domainNameUsername": React.findDOMNode(this.refs.domainNameUsername).value.trim(),
-            "domainNamePassword": React.findDOMNode(this.refs.domainNamePassword).value.trim(),
-            "wordpressTheme": React.findDOMNode(this.refs.wordpressTheme).value,
-            "pages": React.findDOMNode(this.refs.pages).value.trim(),
-            "fields": React.findDOMNode(this.refs.fields).value.trim(),
-            "emails": React.findDOMNode(this.refs.emails).value.trim(),
-            "hosting": React.findDOMNode(this.refs.hosting).value,
-            "createdAt": new Date(),
-            "status": "new"
+        if(this.checkSlideValidation()) {
+            let gig = {
+                "username": React.findDOMNode(this.refs.username).value,
+                "gigRef": React.findDOMNode(this.refs.gigRef).value,
+                "domainName": React.findDOMNode(this.refs.domainName).value.trim(),
+                "domainNameUsername": React.findDOMNode(this.refs.domainNameUsername).value.trim(),
+                "domainNamePassword": React.findDOMNode(this.refs.domainNamePassword).value.trim(),
+                "wordpressTheme": React.findDOMNode(this.refs.wordpressTheme).value,
+                "pages": React.findDOMNode(this.refs.pages).value.trim(),
+                "fields": React.findDOMNode(this.refs.fields).value.trim(),
+                "emails": React.findDOMNode(this.refs.emails).value.trim(),
+                "hosting": React.findDOMNode(this.refs.hosting).value,
+                "createdAt": new Date(),
+                "status": "new"
+            }
+
+            Meteor.call("addGig", gig);
+        } else {
+            // Show error message
         }
 
-        Meteor.call("addGig", gig);
     },
 
     render() {
@@ -102,7 +101,7 @@ GigForm = React.createClass({
                 <input type="hidden" ref="username" value="fiverrUser" />
                 <input type="hidden" ref="gigRef" value="230498" />
                 <div className="panelSlider__slides">
-                    <div className={panelOneClassName}>
+                    <div id="panel-1" className={panelOneClassName}>
                         <h4 className="indigo white-text padding-20 margin-0">Domain Name</h4>
                         <div className="panelSlider__inner white padding-40 flex flex--stacked">
                             <div className="fieldRows">
@@ -113,21 +112,21 @@ GigForm = React.createClass({
                                 </div>
                                 <div className="row">
                                     <div className="input-field col s12">
-                                        <input ref="domainName" id="domain_name" type="text" />
+                                        <input ref="domainName" id="domain_name" type="text" onBlur={ this.validateField } />
                                         <label for="domain_name">Registered Domain Name</label>
                                     </div>
                                 </div>
                                 <div className="row">
                                     <div className="input-field col s4">
-                                        <input ref="domainNameProvider" id="domain_name_provider" type="text" />
+                                        <input ref="domainNameProvider" id="domain_name_provider" type="text" onBlur={ this.validateField } />
                                         <label for="domain_name_provider">Domain Name Provider</label>
                                     </div>
                                     <div className="input-field col s4">
-                                        <input ref="domainNameUsername" id="domain_name_username" type="text" />
+                                        <input ref="domainNameUsername" id="domain_name_username" type="text" onBlur={ this.validateField } />
                                         <label for="domain_name_username">Domain Name Username</label>
                                     </div>
                                     <div className="input-field col s4">
-                                        <input ref="domainNamePassword" id="domain_name_password" type="text" />
+                                        <input ref="domainNamePassword" id="domain_name_password" type="text" onBlur={ this.validateField } />
                                         <label for="domain_name_password">Domain Name Password</label>
                                     </div>
                                 </div>
@@ -139,7 +138,7 @@ GigForm = React.createClass({
                     </div>
 
 
-                    <div className={panelTwoClassName}>
+                    <div id="panel-2" className={panelTwoClassName}>
                         <h4 className="indigo white-text padding-20 margin-0">WordPress Theme</h4>
                         <div className="panelSlider__inner white padding-40 flex flex--stacked">
                             <div className="fieldRows">
@@ -156,10 +155,10 @@ GigForm = React.createClass({
                                         <div className="file-field input-field">
                                             <div className="btn indigo lighten-2">
                                                 <span>Upload .zip file</span>
-                                                <input type="file" ref="wordpressTheme" />
+                                                <input type="file" ref="wordpressTheme" onBlur={ this.validateField } />
                                             </div>
                                             <div className="file-path-wrapper">
-                                                <input className="file-path" type="text" placeholder="e.g wordpresstheme.zip" />
+                                                <input className="file-path" type="text" placeholder="e.g wordpresstheme.zip" onBlur={ this.validateField } />
                                             </div>
                                         </div>
                                     </div>
@@ -173,7 +172,7 @@ GigForm = React.createClass({
                     </div>
 
 
-                    <div className={panelThreeClassName}>
+                    <div id="panel-3" className={panelThreeClassName}>
                         <h4 className="indigo white-text padding-20 margin-0">Content</h4>
                         <div className="panelSlider__inner white padding-40 flex flex--stacked">
                             <div className="fieldRows">
@@ -204,7 +203,7 @@ GigForm = React.createClass({
                     </div>
 
 
-                    <div className={panelFourClassName}>
+                    <div id="panel-4" className={panelFourClassName}>
                         <h4 className="indigo white-text padding-20 margin-0">Hosting</h4>
                         <div className="panelSlider__inner white padding-40 flex flex--stacked">
                             <div className="fieldRows">
@@ -221,7 +220,7 @@ GigForm = React.createClass({
                                     Please sign up for your <a href="http://www.katebascombe.com/website-hosting-fiverr/" target="_blank">one month free hosting here</a> and then confirm with the checkbox below.
                                     </p>
                                     <p>
-                                      <input ref="hosting" type="checkbox" className="filled-in" id="filled-in-box" />
+                                      <input ref="hosting" type="checkbox" className="filled-in" id="filled-in-box" onBlur={ this.validateField } />
                                       <label for="filled-in-box">I have signed up for the hosting, please make my site now!</label>
                                     </p>
                                 </div>
