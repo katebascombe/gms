@@ -24,7 +24,7 @@
 }
 
 .flex--end {
-    align-items: flex-end;
+    justify-content: flex-end;
 }
 
 .flex--stacked {
@@ -73,13 +73,18 @@ blockquote {
     color: #888;
 }
 
+.gigForm {
+    margin-top: 100px;
+}
+
 .panelSlider__slide {
     position: absolute;
     left: 170%;
     right: 0;
     margin-left: auto;
     margin-right: auto;
-    width: 70%;
+    width: 60%;
+    max-width: 800px;
     transition: all 0.5s ease;
 }
 
@@ -89,4 +94,9 @@ blockquote {
 
 .panelSlider__slide--prev {
     left: -170%;
+}
+
+.panelSlider__inner {
+    height: 450px;
+    justify-content: space-between;
 }

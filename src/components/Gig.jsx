@@ -11,8 +11,8 @@ Gig = React.createClass({
 
         return (
             <li className="collection-item">
-                <div>
-                    { this.props.gig.text }
+                <div data-id={ this.props.gig._id }>
+                    { this.props.gig.domainName }
                     <a href="#!" className="secondary-content">
                         <i className="material-icons">send</i>
                     </a>

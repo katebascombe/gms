@@ -48,14 +48,9 @@ if (Meteor.isServer) {
 }
 
 Meteor.methods({
-    addGig(text) {
-        if(! Meteor.userId()) {
-            throw new Meteor.Error("not-authorized");
-        }
-
-        Gigs.insert({
-            text: text,
-            createdAt: new Date()
-        })
+    
+    addGig(gig) {
+        // If gigRef already exists error
+        Gigs.insert(gig)
     }
 })
