@@ -1,8 +1,6 @@
-// Define a collection to hold our gigs
-Gigs = new Mongo.Collection("gigs");
+// This code is executed on the client only
 
 if (Meteor.isClient) {
-    // This code is executed on the client only
 
     const {
         Router,
@@ -40,17 +38,3 @@ if (Meteor.isClient) {
         React.render(<Routes />, document.getElementById("render-target"));
     });
 }
-
-if (Meteor.isServer) {
-    Meteor.publish("gigs", function() {
-        return Gigs.find();
-    })
-}
-
-Meteor.methods({
-    
-    addGig(gig) {
-        // If gigRef already exists error
-        Gigs.insert(gig)
-    }
-})

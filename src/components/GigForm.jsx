@@ -16,13 +16,15 @@ GigForm = React.createClass({
 
         if($element.value) {
             $element.removeClass("error");
+            return true;
         } else {
             $element.addClass("error");
+            return true;
         }
     },
 
     increaseSlides(event) {
-        if(this.checkSlideValidation()) {
+        if(this.validateSlide()) {
             this.setState({ activeSlide: this.state.activeSlide + 1 });
         } else {
             // Show error message
@@ -44,7 +46,7 @@ GigForm = React.createClass({
     handleSubmit(event) {
         event.preventDefault();
 
-        if(this.checkSlideValidation()) {
+        if(this.validateSlide()) {
             let gig = {
                 "username": React.findDOMNode(this.refs.username).value,
                 "gigRef": React.findDOMNode(this.refs.gigRef).value,

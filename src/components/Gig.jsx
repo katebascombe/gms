@@ -7,12 +7,17 @@ Gig = React.createClass({
         gig: React.PropTypes.object.isRequired
     },
 
+    runTask() {
+        Meteor.call("runTask")
+    },
+
     render() {
 
         return (
             <li className="collection-item">
                 <div data-id={ this.props.gig._id }>
                     { this.props.gig.domainName }
+                    <a onClick={ this.runTask }>Run Script</a>
                     <a href="#!" className="secondary-content">
                         <i className="material-icons">send</i>
                     </a>
